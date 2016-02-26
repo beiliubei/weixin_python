@@ -110,7 +110,7 @@ class index:
 		return msg
 
 	def faceplus(self, imgurl):
-		url = 'https://api.faceplusplus.com/detection/detect?url=%s&api_secret=%s&api_key=%s'%(imgurl,"you secret","api_key")
+		url = 'https://api.faceplusplus.com/detection/detect?url=%s&api_secret=%s&api_key=%s'%(imgurl,"Th-wQ5pWZS07Zx7mYyLOmPjfY2i9vHVs","18e024e52967e5f6d5104dcb54314f10")
 		req = urllib2.Request(url)
 		req.add_header('User-Agent','Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)') 
 		res = urllib2.urlopen(req)
