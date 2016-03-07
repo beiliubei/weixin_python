@@ -21,7 +21,7 @@ urls = (
 app = web.application(urls, globals())
 
 render = web.template.render('templates/', cache=False)
-helpstr = '帮助:\n1、查看帮助:输入#help#\n2、网址安全查询:输入单个网址即可返回网址安全信息\n3、小黄鸡聊天:输入非特殊关键字可直接与小黄鸡聊天\n4、查看最新wooyun漏洞:输入#漏洞@(提交/公开/确认/待认)#可查看对应最新提交、公开、确认、待认领的漏洞\n5、人脸识别:发送带人脸的图片'
+helpstr = '哈哈'
 
 class index:
 	def sign(self, dic):
