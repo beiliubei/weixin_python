@@ -11,7 +11,7 @@ import json
 import urlparse
 import re
 import sys
-import MySQLdb
+#import MySQLdb
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
