@@ -11,6 +11,7 @@ import json
 import urlparse
 import re
 import sys
+import MySQLdb
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -21,7 +22,7 @@ urls = (
 app = web.application(urls, globals())
 
 render = web.template.render('templates/', cache=False)
-helpstr = '哈哈哈哈哈'
+helpstr = '哈哈哈哈哈123'
 
 class index:
 	def sign(self, dic):
