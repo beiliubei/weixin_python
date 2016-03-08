@@ -22,7 +22,7 @@ urls = (
 app = web.application(urls, globals())
 
 render = web.template.render('templates/', cache=False)
-helpstr = '哈哈哈'
+helpstr = '哈哈哈lianjie'
 
 class index:
 	def sign(self, dic):
@@ -167,6 +167,9 @@ class index:
 		text = text.strip()
 		if text == 'test':
 			msg = 'test too！'
+		elif text == 'db':
+			db = web.database(dbn='mysql',db='mysql',user='root',host='180.165.181.226',port=8306,pw='')
+			msg = db.select('user')
 		elif text == '#help#':
 			msg = helpstr
 		elif text.startswith('#漏洞') and text.endswith('#'): 
