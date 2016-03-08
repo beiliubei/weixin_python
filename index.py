@@ -166,7 +166,7 @@ class index:
 	def check_text(self, text):
 		text = text.strip()
 		if text == 'test':
-			msg = 'test too！'
+			msg = 'test too！!'
 		elif text == 'db':
 			#db = web.database(dbn='mysql',db='mysql',host='180.165.181.226',port='8306',user='root',pw='')
 			msg = 'master'
