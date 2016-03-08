@@ -170,7 +170,8 @@ class index:
 		elif text == 'db':
 			try:
 				db = web.database(dbn='mysql',db='mysql',host='180.165.181.226',port='8306',user='root',pw='')
-				msg = 'ok'
+				res = db.select('user')
+				msg = res[0].Host
 			except:
 				msg = 'not ok'
 		elif text == '#help#':
