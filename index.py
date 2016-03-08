@@ -170,7 +170,7 @@ class index:
 		elif text == 'db':
 			try:
 				db = web.database(dbn='mysql',db='mysql',host='180.165.181.226',port='8306',user='root',pw='',)
-				res = db.query('select * from user')
+				res = db.select('user')
 				msg = 'ok'
 			except:
 				msg = 'not ok'
