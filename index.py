@@ -169,8 +169,8 @@ class index:
 			msg = 'test too！!'
 		elif text == 'db':
 			try:
-				db = web.database(dbn='mysql',db='mysql',host='180.165.181.226',port='8306',user='root',pw='')
-				res = db.query('select * from user')
+				db = web.database(dbn='mysql',db='mysql',host='180.165.181.226',port='8305',user='root',pw='')
+				#res = db.query('select * from user')
 				msg = 'ok'
 			except:
 				msg = 'not ok'
