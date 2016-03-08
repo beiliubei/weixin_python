@@ -22,7 +22,7 @@ urls = (
 app = web.application(urls, globals())
 
 render = web.template.render('templates/', cache=False)
-helpstr = '哈哈哈lianjie'
+helpstr = '哈哈哈哈哈'
 
 class index:
 	def sign(self, dic):
