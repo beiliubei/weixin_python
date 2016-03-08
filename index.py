@@ -171,7 +171,7 @@ class index:
 		# 	db = web.database(dbn='mysql',db='mysql',user='root',host='180.165.181.226',port=8306,pw='')
 		# 	msg = db.select('user')
 		elif text == '#help#':
-			msg = helpstr
+			msg = 'is this true'
 		elif text.startswith('#漏洞') and text.endswith('#'): 
 			msg = self.get_woobug(text)
 		elif self.ifurl(text):
