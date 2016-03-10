@@ -171,7 +171,16 @@ class index:
 			msg = 'test too！!'
 		elif len(re.findall(re.compile(r'addURL:'),text)) != 0:
 			result = re.findall(expc,text)
-			msg = 'The default URL is set to ' + '\"' + result[0] + '\"'
+			if len(result) != 0:
+				try:
+					db = web.database(dbn='mysql',db='wx',host='180.165.181.226',port=8306,user='root',pw='',)
+					if len(db.select('URL')) != 0:
+						try:
+							db.update('URL', where='openId = $FromUserName',vars=locals(),URL = result[0])
+							msg = 'The default Jenkins URL is set to ' + result[0]
+						except:
+							msg = 'Database Error'
+				msg = 'The default URL is set to ' + result[0]
 		elif text == 'query':
 			try:
 				db = web.database(dbn='mysql',db='wx',host='180.165.181.226',port=8306,user='root',pw='',)
