@@ -192,10 +192,8 @@ class index:
 			expression = r'addTask:\s*([^\s]+)\s*([a-zA-z]+://[^s]*)*'
 			expc = re.compile(expression)
 			result = re.findall(expc,text)
-			if len(result) >1:
-				msg = 'Task name is ' + result[0] +'\n URL is ' +result[1]
-			elif len(result) == 1:
-				msg = 'Task name is ' + result[0]
+			if result:
+				msg = 'Task name is ' + (result[0])[0] +'\n URL is ' +result[0][1]
 
 		elif text == 'query':
 			try:
