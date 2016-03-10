@@ -171,7 +171,7 @@ class index:
 			msg = 'test too！!'
 		elif len(re.findall(expc,text)) != 0:
 			result = re.findall(expc,text)
-			msg = result[0]
+			msg = 'The default URL is set to '+result[0]
 		elif text == 'query':
 			try:
 				db = web.database(dbn='mysql',db='wx',host='180.165.181.226',port=8306,user='root',pw='',)
