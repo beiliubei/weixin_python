@@ -165,12 +165,13 @@ class index:
 
 	def check_text(self, text,FromUserName):
 		text = text.strip()
-		expression = r'addURL:([a-zA-z]+://[^s]* )'
+		expression = r'addURL:([a-zA-z]+://[^s]*)'
 		expc = re.compile(expression)
 		if text == 'test':
 			msg = 'test too！!'
 		elif len(re.findall(expc,text)) != 0:
-			msg = 'Use the format "#URL:+URL" to set default Jenkins URL'
+			result = re.findall(expc,text)
+			msg = result[0]
 		elif text == 'query':
 			try:
 				db = web.database(dbn='mysql',db='wx',host='180.165.181.226',port=8306,user='root',pw='',)
