@@ -34,19 +34,19 @@ class index:
 		checklist = [token,nonce,timestamp]
 		checklist.sort()
 		strs = checklist[0]+checklist[1]+checklist[2]
-		sha1result = hashlib.sha1(strs).hexdigest()	
+		sha1result = hashlib.sha1(strs).hexdigest()
 		if sha1result == signature:
 			return echostr
 		else:
 			return 'fooying'
 
 	def simshttp(self, text):
-		text = urllib.quote(text.encode('utf-8'))	
+		text = urllib.quote(text.encode('utf-8'))
 		url = 'http://www.simsimi.com/func/req?lc=ch&msg=%s'%text
-		req = urllib2.Request(url) 
-		req.add_header('Referer','http://www.simsimi.com/talk.htm?lc=ch') 
-		req.add_header('User-Agent','Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)') 
-		req.add_header('Accept','text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8') 
+		req = urllib2.Request(url)
+		req.add_header('Referer','http://www.simsimi.com/talk.htm?lc=ch')
+		req.add_header('User-Agent','Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)')
+		req.add_header('Accept','text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8')
 		req.add_header('Cookie','JSESSIONID=8DBCA2CEF308AB340641266203B30D8F')
 		res = urllib2.urlopen(req)
 		html = res.read()
@@ -55,8 +55,8 @@ class index:
 
 	def scanv(self, url):
 		url = 'http://www.anquan.org/seccenter/search/%s'%url
-		req = urllib2.Request(url) 
-		req.add_header('User-Agent','Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)') 
+		req = urllib2.Request(url)
+		req.add_header('User-Agent','Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)')
 		res = urllib2.urlopen(req)
 		html = res.read()
 		res.close()
@@ -81,7 +81,7 @@ class index:
 		sus = re.search(sus_regex, html)
 		if sus:
 			result['safe'] = '存在被黑客入侵风险'
-		return result	
+		return result
 
 	def get_woobug(self, text):
 		if '@' not in text:
@@ -94,8 +94,8 @@ class index:
 			url = 'http://api.wooyun.org/bugs/public/limit/1'
 		elif '待认' in text:
 			url = 'http://api.wooyun.org/bugs/unclaim/limit/1'
-		req = urllib2.Request(url) 
-		req.add_header('User-Agent','Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)') 
+		req = urllib2.Request(url)
+		req.add_header('User-Agent','Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)')
 		res = urllib2.urlopen(req)
 		html = res.read()
 		res.close()
@@ -113,7 +113,7 @@ class index:
 	def faceplus(self, imgurl):
 		url = 'https://api.faceplusplus.com/detection/detect?url=%s&api_secret=%s&api_key=%s'%(imgurl,"Th-wQ5pWZS07Zx7mYyLOmPjfY2i9vHVs","18e024e52967e5f6d5104dcb54314f10")
 		req = urllib2.Request(url)
-		req.add_header('User-Agent','Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)') 
+		req.add_header('User-Agent','Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)')
 		res = urllib2.urlopen(req)
 		html = res.read()
 		res.close()
@@ -146,7 +146,7 @@ class index:
 		elif text.startswith(('http://','https://')):
 			return True
 		else:
-			path = urlparse.urlparse(text).path	
+			path = urlparse.urlparse(text).path
 			if text.split('/')[0] == path:
 				return True
 			else:
@@ -156,31 +156,36 @@ class index:
 		post = {}
 		post['ToUserName'] = FromUserName
 		post['FromUserName'] = ToUserName
-		post['CreateTime'] = time.time() 
+		post['CreateTime'] = time.time()
 		post['MsgType'] = 'text'
-		post['Content'] = msg 
-		post['FuncFlag'] = 0 
+		post['Content'] = msg
+		post['FuncFlag'] = 0
 		web.header('Content-Type', 'text/xml')
 		return render.post_text(post)
 
-	def check_text(self, text):
+	def check_text(self, text,FromUserName):
 		text = text.strip()
 		if text == 'test':
 			msg = 'test too！!'
-		elif text == 'db':
+		elif text == 'query':
 			try:
-				db = web.database(dbn='mysql',db='mysql',host='180.165.181.226',port=8306,user='root',pw='',)
-				res = db.select('user')
-				msg = 'ok'
+				db = web.database(dbn='mysql',db='wx',host='180.165.181.226',port=8306,user='root',pw='',)
+				try:
+					res = db.select('user',what='taskName',where='openId = $FromUserName',vars = locals())
+					msg = 'Here is your task:\n'
+					for item in res:
+						msg = msg + item.taskId + ' ' + item.taskName +'\n'
+				except:
+					msg = 'error'
 			except:
 				msg = 'not ok'
 		elif text == '#help#':
 			msg = 'is this true'
-		elif text.startswith('#漏洞') and text.endswith('#'): 
+		elif text.startswith('#漏洞') and text.endswith('#'):
 			msg = self.get_woobug(text)
 		elif self.ifurl(text):
 			result = self.scanv(text.strip())
-			msg = '网址:[%s]\n标题:%s\n检测分数:%s\n安全检测:%s\n该检测结果由安全联盟(http://www.anquan.org)提供技术支持\n'%(text.strip(),result['title'],result['score'],result['safe'])	
+			msg = '网址:[%s]\n标题:%s\n检测分数:%s\n安全检测:%s\n该检测结果由安全联盟(http://www.anquan.org)提供技术支持\n'%(text.strip(),result['title'],result['score'],result['safe'])
 		else:
 			ret = self.simshttp(text)
 			if ret:
@@ -207,11 +212,11 @@ class index:
 			MsgId = root.getElementsByTagName('MsgId')[0].childNodes[0].data
 			if MsgType == 'text':
 				Content = root.getElementsByTagName('Content')[0].childNodes[0].data
-				msg = self.check_text(Content)
+				msg = self.check_text(Content,FromUserName)
 			elif MsgType == 'image':
 				PicUrl = root.getElementsByTagName('PicUrl')[0].childNodes[0].data
 				msg = self.faceplus(PicUrl)
-			return self.post_text(msg, FromUserName, ToUserName)	
+			return self.post_text(msg, FromUserName, ToUserName)
 
 if __name__ == "__main__":
 	app.run()
