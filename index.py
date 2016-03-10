@@ -189,7 +189,7 @@ class index:
 				except:
 					msg = 'Database Error'
 		elif re.findall(re.compile(r'addTask:'),text):
-			expression = r'addTask:\s*([^\s]+)\s+([a-zA-z]+://[^s]*)'
+			expression = r'addTask:\s*([^\s]+)\s*([a-zA-z]+://[^s]*)*'
 			expc = re.compile(expression)
 			result = re.findall(expc,text)
 			if len(result) >1:
