@@ -165,16 +165,17 @@ class index:
 
 	def check_text(self, text,FromUserName):
 		text = text.strip()
-		expression = r'addURL:([a-zA-z]+://[^s]*)'
-		expc = re.compile(expression)
+
 		if text == 'test':
 			msg = 'test too！!'
-		elif len(re.findall(re.compile(r'addURL:'),text)) != 0:
+		elif re.findall(re.compile(r'addURL:'),text):
+			expression = r'addURL:\s*([a-zA-z]+://[^s]*)'
+			expc = re.compile(expression)
 			result = re.findall(expc,text)
-			if len(result) != 0:
+			if result:
 				try:
 					db = web.database(dbn='mysql',db='wx',host='180.165.181.226',port=8306,user='root',pw='',)
-					if len(db.select('URL')) == 0:
+					if not db.select('URL'):
 						try:
 							db.insert('URL',openId=FromUserName,URL=result[0])
 						except:
@@ -185,9 +186,16 @@ class index:
 							msg = 'The default Jenkins URL is set to ' + result[0]
 						except:
 							msg = 'Database Error'
-					msg = 'The default URL is set to ' + result[0]
 				except:
 					msg = 'Database Error'
+		elif re.findall(re.compile(r'addTask:'),text):
+			expression = r'addTask:\s*([^\s]+)\s+([a-zA-z]+://[^s]*)'
+			expc = re.compile(expression)
+			result = re.findall(expc,text)
+			if len(result) >1:
+				msg = 'Task name is ' + result[0] +'\n URL is ' +result[1]
+			elif len(result) == 1:
+				msg = 'Task name is ' + result[0]
 
 		elif text == 'query':
 			try:
