@@ -197,14 +197,14 @@ class index:
 			if result:
 				if result[0][1]:
 					try:
-						db.insert('user',taskName = result[0][0], URL = result[0][1])
+						db.insert('user',openId=FromUserName,taskName = result[0][0], JenkinsURL = result[0][1])
 						msg = 'Task name is ' + result[0][0] +'\n URL is ' + result[0][1]
 					except:
 						msg = 'Insert error'
 				else:
 					try:
 						url = db.select('URL',what='URL',where='openId=$FromUserName',vars=locals())
-						msg = url[0].URL
+						msg = url[0].URL+result[0][0]+'\n'
 						db.insert('user',openId = FromUserName,taskName=result[0][0],JenkinsURL = url[0].URL)
 						msg = 'Task name is ' + result[0][0] + '\n URL is ' + url[0].URL
 					except:
