@@ -165,7 +165,10 @@ class index:
 
 	def check_text(self, text,FromUserName):
 		text = text.strip()
-
+		try:
+			db = web.database(dbn='mysql',db='wx',host='180.165.181.226',port=8306,user='root',pw='',)
+		except:
+			return 'Cannot connect to database'
 		if text == 'test':
 			msg = 'test too！!'
 		elif re.findall(re.compile(r'addURL:'),text):
@@ -174,8 +177,7 @@ class index:
 			result = re.findall(expc,text)
 			if result:
 				try:
-					db = web.database(dbn='mysql',db='wx',host='180.165.181.226',port=8306,user='root',pw='',)
-					if not db.select('URL'):
+					if not db.select('URL',where='openId = $FromUserName',vars=locals()):
 						try:
 							db.insert('URL',openId=FromUserName,URL=result[0])
 						except:
@@ -193,20 +195,27 @@ class index:
 			expc = re.compile(expression)
 			result = re.findall(expc,text)
 			if result:
-				msg = 'Task name is ' + (result[0])[0] +'\n URL is ' +result[0][1]
-
+				if result[0][1]:
+					try:
+						db.insert('user',taskName = result[0][0], URL = result[0][1])
+						msg = 'Task name is ' + result[0][0] +'\n URL is ' + result[0][1]
+					except:
+						msg = 'Insert error'
+				else:
+					try:
+						url = db.select('URL',what='URL',where='openId=$FromUserName',vars=locals())
+						db.insert('URL',openId = FromUserName,URL = url)
+						msg = 'Task name is ' + result[0][0] + '\n URL is ' + url
+					except:
+						msg = 'Insert error'
 		elif text == 'query':
 			try:
-				db = web.database(dbn='mysql',db='wx',host='180.165.181.226',port=8306,user='root',pw='',)
-				try:
-					res = db.select('user',what='taskName',where='openId = $FromUserName',vars = locals())
-					msg = 'Here is your task:\n'
-					for item in res:
-						msg = msg + item.taskId + ' ' + item.taskName + ' ' + item.JenkinsURL + '\n'
-				except:
-					msg = 'error'
+				res = db.select('user',what='taskName',where='openId = $FromUserName',vars = locals())
+				msg = 'Here is your task:\n'
+				for item in res:
+					msg = msg + item.taskId + ' ' + item.taskName + ' ' + item.JenkinsURL + '\n'
 			except:
-				msg = 'not ok'
+				msg = 'Error'
 		elif text == '#help#':
 			msg = 'is this true'
 		elif text.startswith('#漏洞') and text.endswith('#'):
