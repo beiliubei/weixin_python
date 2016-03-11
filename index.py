@@ -204,8 +204,8 @@ class index:
 				else:
 					try:
 						url = db.select('URL',what='URL',where='openId=$FromUserName',vars=locals())
-						db.insert('URL',openId = FromUserName,URL = url)
-						msg = 'Task name is ' + result[0][0] + '\n URL is ' + url
+						db.insert('URL',openId = FromUserName,URL = url[0])
+						msg = 'Task name is ' + result[0][0] + '\n URL is ' + url[0]
 					except:
 						msg = 'Insert error'
 		elif text == 'query':
