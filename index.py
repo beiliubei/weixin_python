@@ -211,7 +211,7 @@ class index:
 						msg += 'Insert error'
 		elif text == 'query':
 			try:
-				res = db.select('user',what='taskName',where='openId = $FromUserName',vars = locals())
+				res = db.select('user',where='openId = $FromUserName',vars = locals())
 				msg = 'Here is your task:\n'
 				for item in res:
 					msg = msg + '%d'%item.taskId + ' ' + item.taskName + ' ' + item.JenkinsURL + '\n'
