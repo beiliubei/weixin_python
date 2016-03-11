@@ -204,7 +204,6 @@ class index:
 				else:
 					try:
 						url = list(db.select('URL',what='URL',where='openId=$FromUserName',vars=locals()))
-						msg = url[0].URL+result[0][0]+'\n'
 						db.insert('user',openId = FromUserName,taskName=result[0][0],JenkinsURL = url[0].URL)
 						msg = 'Task name is ' + result[0][0] + '\n URL is ' + url[0].URL
 					except:
