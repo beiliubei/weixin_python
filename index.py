@@ -177,14 +177,14 @@ class index:
 			result = re.findall(expc,text)
 			if result:
 				try:
-					if not db.select('URL',where='openId = $FromUserName',vars=locals()):
+					if not db.select('wx_user_url',where='openId = $FromUserName',vars=locals()):
 						try:
-							db.insert('URL',openId=FromUserName,URL=result[0])
+							db.insert('wx_user_url',openId=FromUserName,URL=result[0])
 						except:
 							msg = 'Database Error'
 					else:
 						try:
-							db.update('URL', where='openId = $FromUserName',vars=locals(),URL = result[0])
+							db.update('wx_user_url', where='openId = $FromUserName',vars=locals(),URL = result[0])
 							msg = 'The default Jenkins URL is set to ' + result[0]
 						except:
 							msg = 'Database Error'
@@ -197,20 +197,20 @@ class index:
 			if result:
 				if result[0][1]:
 					try:
-						db.insert('user',openId=FromUserName,taskName = result[0][0], JenkinsURL = result[0][1])
+						db.insert('wx_user',openId=FromUserName,taskName = result[0][0], JenkinsURL = result[0][1])
 						msg = 'Task name is ' + result[0][0] +'\n URL is ' + result[0][1]
 					except:
 						msg = 'Insert error'
 				else:
 					try:
-						url = list(db.select('URL',what='URL',where='openId=$FromUserName',vars=locals()))
-						db.insert('user',openId = FromUserName,taskName=result[0][0],JenkinsURL = url[0].URL)
+						url = list(db.select('wx_user_url',what='URL',where='openId=$FromUserName',vars=locals()))
+						db.insert('wx_user',openId = FromUserName,taskName=result[0][0],JenkinsURL = url[0].URL)
 						msg = 'Task name is ' + result[0][0] + '\n URL is ' + url[0].URL
 					except:
 						msg += 'Insert error'
 		elif text == 'query':
 			try:
-				res = db.select('user',where='openId = $FromUserName',vars = locals())
+				res = db.select('wx_user',where='openId = $FromUserName',vars = locals())
 				msg = 'Here is your task:\n'
 				for item in res:
 					msg = msg + '%d'%item.taskId + ' ' + item.taskName + ' ' + item.JenkinsURL + '\n'
