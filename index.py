@@ -214,7 +214,7 @@ class index:
 				res = db.select('user',what='taskName',where='openId = $FromUserName',vars = locals())
 				msg = 'Here is your task:\n'
 				for item in res:
-					msg = msg + item.taskId + ' ' + item.taskName + ' ' + item.JenkinsURL + '\n'
+					msg = msg + '%d'%item.taskId + ' ' + item.taskName + ' ' + item.JenkinsURL + '\n'
 			except:
 				msg = 'Error'
 		elif text == '#help#':
