@@ -191,6 +191,18 @@ class index:
 				except:
 					msg = 'Database Error'
 		elif re.findall(re.compile(r'addTask:'),text):
+			complexexp = r'addTask:\s*([^\s]+)\s*([^\s]+):([^\s]+)@([a-zA-z]+://[^s]*)'
+			expc = re.compile(complexexp)
+			result = expc.findall(text)
+			if result:
+				if len(result[0]) == 4:
+					try:
+						db.insert('wx_user',openId = FromUserName,taskName=result[0][0],JenkinsURL = result[0][3],username=result[0][1],pw=result[0][2])
+						msg = 'Task name is ' + result[0][0] + '\nURL is ' + result[0][3]
+						return msg
+					except:
+						msg = 'Insert error'
+						return msg
 			expression = r'addTask:\s*([^\s]+)\s*([a-zA-z]+://[^s]*)*'
 			expc = re.compile(expression)
 			result = re.findall(expc,text)
