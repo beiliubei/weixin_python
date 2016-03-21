@@ -11,7 +11,7 @@ import json
 import urlparse
 import re
 import sys
-import MySQLdb
+from jenkinsapi.jenkins import Jenkins
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -197,7 +197,7 @@ class index:
 			if result:
 				if len(result[0]) == 4:
 					try:
-						db.insert('wx_user',openId = FromUserName,taskName=result[0][0],JenkinsURL = result[0][3],username=result[0][1],pw=result[0][2])
+						db.insert('wx_user',openId=FromUserName,taskName=result[0][0],JenkinsURL=result[0][3],username=result[0][1],pw=result[0][2])
 						msg = 'Task name is ' + result[0][0] + '\nURL is ' + result[0][3]
 						return msg
 					except:
@@ -209,17 +209,30 @@ class index:
 			if result:
 				if result[0][1]:
 					try:
-						db.insert('wx_user',openId=FromUserName,taskName = result[0][0], JenkinsURL = result[0][1])
+						db.insert('wx_user',openId=FromUserName,taskName=result[0][0], JenkinsURL=result[0][1])
 						msg = 'Task name is ' + result[0][0] +'\n URL is ' + result[0][1]
 					except:
 						msg = 'Insert error'
 				else:
 					try:
-						url = list(db.select('wx_user_url',what='URL',where='openId=$FromUserName',vars=locals()))
-						db.insert('wx_user',openId = FromUserName,taskName=result[0][0],JenkinsURL = url[0].URL)
+						url = list(db.select('wx_user_url',what='URL',where='openId = $FromUserName',vars=locals()))
+						db.insert('wx_user',openId=FromUserName,taskName=result[0][0],JenkinsURL=url[0].URL)
 						msg = 'Task name is ' + result[0][0] + '\n URL is ' + url[0].URL
 					except:
-						msg += 'Insert error'
+						msg = 'Insert error'
+		elif re.findall(re.compile(r'build:'),text):
+			expression = r'build:\s*([^\s]+)'
+			expc = re.compile(expression)
+			result = re.findall(expc,text)
+			if result:
+				taskName = result[0]
+				try:
+					res = db.select('wx_user',where='openId = $FromUserName and taskName = $taskName',vars=locals())
+					j = Jenkins('http://pi.iccapp.com:58082')
+					for item in res:
+						j.build_job(jobname=item.taskName)
+				except:
+					msg = 'select error'
 		elif text == 'query':
 			try:
 				res = db.select('wx_user',where='openId = $FromUserName',vars = locals())
