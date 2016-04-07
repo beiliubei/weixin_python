@@ -166,7 +166,7 @@ class index:
 	def check_text(self, text,FromUserName):
 		text = text.strip()
 		try:
-			db = web.database(dbn='mysql',db='wx',host='180.165.181.226',port=8306,user='root',pw='',)
+			db = web.database(dbn='mysql',db='wx',host='pi.iccapp.com',port=8306,user='root',pw='',)
 		except:
 			return 'Cannot connect to database'
 		if text == 'test':
